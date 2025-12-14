@@ -85,7 +85,7 @@ m = MPEManager.mpe({ |manager, note|
 
 Uses MPEManager.midi
 
-Create a basic synth for every note pressed. This example will show how to bind a non-MPE (standard MIDI) device and its control to the synth
+Create a basic synth for every note pressed. This example will show how to bind a non-MPE (standard MIDI) device and its controls to the synth
 
   getSynth:
     - freq: midi note converted to Hz
