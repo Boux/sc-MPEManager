@@ -17,11 +17,11 @@ MPEControls : Object {
     ^this.get(key, defaultVal).value;
   }
 
-	// ctl.set(\vel, 100, \num, 50, ...);
-	// ctl.set((vel: 100, num: 50));
+  // ctl.set(\vel, 100, \num, 50, ...);
+  // ctl.set((vel: 100, num: 50));
   set { |...args|
-		// allows pairs or event as params
-		var e = if (args[0].isKindOf(Event)) { args[0] } { args.asEvent };
+    // allows pairs or event as params
+    var e = if (args[0].isKindOf(Event)) { args[0] } { args.asEvent };
 
     // sets key/values into instance variables (e is an event that contains said key/values)
     e.keysValuesDo { |k, v|

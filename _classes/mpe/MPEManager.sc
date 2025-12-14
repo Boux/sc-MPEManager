@@ -7,7 +7,7 @@ TODO:
 */
 
 MPEManager : Object {
-	var <notes, <ctl, <midiBinds, <getKeyFn, <getSynthFn, <onChangeFn, <onReleaseFn, <chan, <srcID, <>bendRange, <>trace;
+  var <notes, <ctl, <midiBinds, <getKeyFn, <getSynthFn, <onChangeFn, <onReleaseFn, <chan, <srcID, <>bendRange, <>trace;
 
   *new { |getSynth, onChange, onRelease, getKey, chan, srcID, bendRange=24|
     var instance = super.newCopyArgs(
@@ -72,7 +72,7 @@ MPEManager : Object {
   }
 
   bindMIDI {
-		this.unbindAll;
+    this.unbindAll;
 
     // note is no longer unique on channel
     getKeyFn = { |val, num, chan, src|
@@ -83,15 +83,15 @@ MPEManager : Object {
     this.bindToggle;
 
     this.bind(\bend, \bend, { |note, key, val, chan, src|
-			this.set(\bend, val.linlin(0, 2**14, bendRange * -1, bendRange));
+      this.set(\bend, val.linlin(0, 2**14, bendRange * -1, bendRange));
     });
 
     ^this;
   }
 
 
-	bindMPE {
-		this.unbindAll;
+  bindMPE {
+    this.unbindAll;
 
     getKeyFn = { |val, num, chan, src|
       [chan, src].join("_").asSymbol;
@@ -101,15 +101,15 @@ MPEManager : Object {
     this.bindToggle;
 
     this.bind(\bend, \bend, { |note, key, val, chan, src|
-			note.set(\bend, val.linlin(0, 2**14, bendRange * -1, bendRange));
+      note.set(\bend, val.linlin(0, 2**14, bendRange * -1, bendRange));
     });
 
     this.bind(\pressure, \touch, { |note, key, val, chan, src|
-			note.set(\pressure, val.linlin(0, 127, 0, 1));
+      note.set(\pressure, val.linlin(0, 127, 0, 1));
     });
 
     this.bind(\timbre, \control, { |note, key, val, num, chan, src|
-			note.set(\timbre, val.linlin(0, 127, -1, 1));
+      note.set(\timbre, val.linlin(0, 127, -1, 1));
     }, 74);
 
     ^this;
@@ -120,7 +120,7 @@ MPEManager : Object {
       if (note.notNil) { note.release };
       note = note ?? { MPENote(this) };
 
-			note.set(\vel, val, \num, num);
+      note.set(\vel, val, \num, num);
       note.play;
       notes[key] = note;
     });
@@ -131,16 +131,16 @@ MPEManager : Object {
     });
   }
 
-	unbindAll {
-		midiBinds.do { |func, key|
-			("unbind_" ++ key).postln;
-			func.free;
-		};
+  unbindAll {
+    midiBinds.do { |func, key|
+      ("unbind_" ++ key).postln;
+      func.free;
+    };
 
     midiBinds = ();
 
-		^this;
-	}
+    ^this;
+  }
 
 
   getSynth { |note|
