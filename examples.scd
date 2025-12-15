@@ -2,7 +2,6 @@
 // sudo modprobe snd-virmidi enable=1,1,1,1,1,1,1,1 midi_devs=1,1,1,1,1,1,1,1
 
 
-// Tutorial: https://www.youtube.com/watch?v=OBF4FkEf1Ac
 // Github: https://github.com/Boux/sc-MPEManager
 
 
