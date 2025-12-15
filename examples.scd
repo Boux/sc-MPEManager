@@ -12,13 +12,7 @@ MIDIClient.init;
 MIDIIn.connectAll;
 );
 
-MIDIFunc.trace(true);
-MIDIFunc.trace(false);
 
-Platform.userExtensionDir;
-
-// list MIDI devices
-MIDIClient.sources.do { |src, i| "[%] %: %\n".postf(i, src.uid, src.name) };
 
 
 // simple synth with vibrato and LPF
@@ -39,6 +33,50 @@ SynthDef(\example, { |freq=200, bend=0, timbre=0, width=0.25, vibrato_depth=0, f
   Out.ar(out, sig);
 }).add;
 )
+
+
+// testing MPE
+(
+try { m.free };
+m = MPEManager.mpe({ |manager, note|
+  var synth = Synth(\example, [
+    \freq, note.num.midicps,
+    \amp, note.vel.linlin(0, 127, 0.1, 1),
+    \out, 2,
+  ]);
+
+  synth.map(\bend, note.ctl.bus(\bend, 0));
+  synth;
+}, { |manager, note, e|
+  if (e[\timbre].notNil) {
+    note.synth.set(\width, e[\timbre].linlin(-1, 1, 0.02, 0.5));
+  };
+});
+)
+
+// testing MIDI
+(
+try { m.free };
+m = MPEManager.midi({ |manager, note|
+  var synth = Synth(\example, [
+    \freq, note.num.midicps,
+    \amp, note.vel.linlin(0, 127, 0.1, 1),
+    \out, 2,
+  ]);
+
+  synth.map(\bend, manager.ctl.bus(\bend, 0));
+  synth.map(\vibrato_depth, manager.ctl.bus(\vib, 0));
+  synth;
+});
+
+m.bind(\vib, \control, { |note, key, val|
+  m.set(\vib, val.linlin(0, 127, 0, 1));
+}, 93);
+)
+
+
+
+
 
 (
 /*
@@ -241,12 +279,6 @@ srcID: MIDIClient.sources[3].uid);
   ~demo1.set(\detune, val.linlin(0, 127, 0.0001, 5));
 }, 94);
 )
-
-
-~demo1.trace = true;
-~demo1.trace = false;
-
-
 
 
 
