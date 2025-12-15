@@ -2,6 +2,7 @@
 // sudo modprobe snd-virmidi enable=1,1,1,1,1,1,1,1 midi_devs=1,1,1,1,1,1,1,1
 
 
+// Tutorial + Demo (FR): https://www.youtube.com/watch?v=OBF4FkEf1Ac
 // Github: https://github.com/Boux/sc-MPEManager
 
 
@@ -46,7 +47,6 @@ m = MPEManager.mpe({ |manager, note|
   var synth = Synth(\example, [
     \freq, note.num.midicps,
     \amp, note.vel.linlin(0, 127, 0.1, 1),
-    \out, 2,
   ]);
 
   synth.map(\bend, note.ctl.bus(\bend, 0));
@@ -65,7 +65,6 @@ m = MPEManager.midi({ |manager, note|
   var synth = Synth(\example, [
     \freq, note.num.midicps,
     \amp, note.vel.linlin(0, 127, 0.1, 1),
-    \out, 2,
   ]);
 
   synth.map(\bend, manager.ctl.bus(\bend, 0));
@@ -104,7 +103,6 @@ m = MPEManager.mpe({ |manager, note|
   var synth = Synth(\example, [
     \freq, note.num.midicps,
     \amp, note.vel.linlin(0, 127, 0.1, 1),
-    \out, 2
   ]);
 
   // mapped to note-specific bend bus
@@ -147,7 +145,6 @@ m = MPEManager.midi({ |manager, note|
     \freq, note.num.midicps,
     \amp, note.vel.linlin(0, 127, 0.1, 1),
     \width, manager.ctl.value(\fatness, 0.25),
-    \out, 2
   ]);
 
   // mapped to global bend bus
@@ -189,7 +186,6 @@ m = MPEManager.midi({ |manager, note|
     \freq, note.num.midicps,
     \amp, note.vel.linlin(0, 127, 0.1, 1),
     \width: 0.5,
-    \out, 2,
   ]);
 }, chan: 2, srcID: MIDIClient.sources[4].uid);
 );
